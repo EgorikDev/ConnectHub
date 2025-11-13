@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectHub - Современный мессенджер</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <style>
+        /* Инлайн стили для быстрой загрузки */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+        }
+        .loader {
+            text-align: center;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="loader">
+            <div class="loader-spinner"></div>
+            <h2>ConnectHub</h2>
+            <p>Загрузка...</p>
+        </div>
+    </div>
+
+    <!-- Animated Background -->
+    <div class="background-animation">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="auth-container">
+        <!-- Left Hero Section -->
+        <div class="auth-hero">
+            <div class="hero-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h1>ConnectHub</h1>
+                    <p class="tagline">Общение нового поколения</p>
+                </div>
+
+                <div class="hero-features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h3>Полная анонимность</h3>
+                            <p>Ваши данные защищены</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <div>
+                            <h3>Мгновенные сообщения</h3>
+                            <p>Общайтесь в реальном времени</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-gem"></i>
+                        <div>
+                            <h3>NFT аватары</h3>
+                            <p>Уникальные цифровые активы</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-gift"></i>
+                        <div>
+                            <h3>Виртуальные подарки</h3>
+                            <p>Дарите эмоции друзьям</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="security-notice">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>⚠️ ВНИМАНИЕ: Никому не сообщайте коды подтверждения!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Auth Section -->
+        <div class="auth-form-container">
+            <!-- Welcome Step -->
+            <div class="auth-step active" id="stepWelcome">
+                <div class="step-header">
+                    <h2>Добро пожаловать</h2>
+                    <p>Присоединяйтесь к сообществу ConnectHub</p>
+                </div>
+
+                <div class="auth-options">
+                    <button class="auth-option-btn phone-option" onclick="showStep('stepPhone')">
+                        <div class="option-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="option-text">
+                            <h3>По номеру телефона</h3>
+                            <p>Быстрая регистрация с SMS</p>
+                        </div>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </button>
+
+                    <button class="auth-option-btn email-option" onclick="showStep('stepEmail')">
+                        <div class="option-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="option-text">
+                            <h3>По Email адресу</h3>
+                            <p>Традиционный вход</p>
+                        </div>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </button>
+
+                    <button class="auth-option-btn google-option" onclick="signInWithGoogle()">
+                        <div class="option-icon">
+                            <i class="fab fa-google"></i>
+                        </div>
+                        <div class="option-text">
+                            <h3>Продолжить с Google</h3>
+                            <p>Мгновенный доступ</p>
+                        </div>
+                        <i class="fas fa-chevron-right arrow"></i>
+                    </button>
+                </div>
+
+                <div class="auth-footer">
+                    <p>Нажимая продолжить, вы соглашаетесь с 
+                       <a href="#" onclick="showTerms()">Условиями использования</a> и 
+                       <a href="#" onclick="showPrivacy()">Политикой конфиденциальности</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Phone Registration Step -->
+            <div class="auth-step" id="stepPhone">
+                <div class="step-header">
+                    <button class="back-btn" onclick="showStep('stepWelcome')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Регистрация</h2>
+                    <p>Введите ваш номер телефона</p>
+                </div>
+
+                <form class="auth-form" id="phoneForm">
+                    <div class="form-group">
+                        <label for="phoneNumber">Номер телефона</label>
+                        <div class="phone-input-group">
+                            <select class="country-code" id="countryCode">
+                                <option value="+7">+7 RU</option>
+                                <option value="+375">+375 BY</option>
+                                <option value="+380">+380 UA</option>
+                                <option value="+77">+77 KZ</option>
+                            </select>
+                            <input type="tel" id="phoneNumber" class="form-input" placeholder="999 123-45-67" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Имя пользователя</label>
+                        <input type="text" id="username" class="form-input" placeholder="Как вас называть?" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large btn-block">
+                        <span class="btn-text">Отправить код</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                </form>
+
+                <div class="security-warning">
+                    <i class="fas fa-shield-alt"></i>
+                    <p>Код подтверждения придет по SMS. Никому его не сообщайте!</p>
+                </div>
+
+                <div class="demo-hint">
+                    <p><strong>Демо:</strong> Используйте любой номер, код: <strong>123456</strong></p>
+                </div>
+            </div>
+
+            <!-- Phone Verification Step -->
+            <div class="auth-step" id="stepPhoneVerify">
+                <div class="step-header">
+                    <button class="back-btn" onclick="showStep('stepPhone')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Подтверждение</h2>
+                    <p>Введите код из SMS</p>
+                </div>
+
+                <div class="verification-info">
+                    <p>Код отправлен на номер:</p>
+                    <p class="phone-number" id="verifyPhoneNumber">+7 *** *** **67</p>
+                </div>
+
+                <form class="auth-form" id="verifyForm">
+                    <div class="form-group">
+                        <label>Код подтверждения</label>
+                        <div class="code-inputs">
+                            <input type="text" maxlength="1" class="code-input" data-index="0">
+                            <input type="text" maxlength="1" class="code-input" data-index="1">
+                            <input type="text" maxlength="1" class="code-input" data-index="2">
+                            <input type="text" maxlength="1" class="code-input" data-index="3">
+                            <input type="text" maxlength="1" class="code-input" data-index="4">
+                            <input type="text" maxlength="1" class="code-input" data-index="5">
+                        </div>
+                    </div>
+
+                    <div class="timer" id="timer">
+                        <i class="fas fa-clock"></i>
+                        <span>Отправить повторно через <span id="countdown">60</span> сек</span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large btn-block" id="verifyBtn">
+                        <span class="btn-text">Подтвердить</span>
+                        <div class="btn-loader"></div>
+                    </button>
+
+                    <button type="button" class="btn btn-link" id="resendBtn" onclick="resendCode()" disabled>
+                        Отправить код повторно
+                    </button>
+                </form>
+
+                <div class="security-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>НИКОМУ не сообщайте этот код! Сотрудники ConnectHub никогда не запрашивают коды.</p>
+                </div>
+            </div>
+
+            <!-- Email Login Step -->
+            <div class="auth-step" id="stepEmail">
+                <div class="step-header">
+                    <button class="back-btn" onclick="showStep('stepWelcome')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Вход по Email</h2>
+                    <p>Введите ваши учетные данные</p>
+                </div>
+
+                <form class="auth-form" id="emailForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email адрес</label>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <div class="password-input">
+                            <input type="password" id="loginPassword" class="form-input" placeholder="Введите пароль" required>
+                            <button type="button" class="password-toggle" id="passwordToggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            Запомнить меня
+                        </label>
+                        <a href="#" onclick="showStep('stepForgotPassword')">Забыли пароль?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large btn-block">
+                        <span class="btn-text">Войти</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                </form>
+
+                <div class="demo-hint">
+                    <p><strong>Демо:</strong> Email: <strong>demo@connecthub.com</strong>, Пароль: <strong>password</strong></p>
+                </div>
+
+                <div class="auth-footer">
+                    <p>Нет аккаунта? <a href="#" onclick="showStep('stepEmailRegister')">Зарегистрироваться</a></p>
+                </div>
+            </div>
+
+            <!-- Email Registration Step -->
+            <div class="auth-step" id="stepEmailRegister">
+                <div class="step-header">
+                    <button class="back-btn" onclick="showStep('stepEmail')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Регистрация</h2>
+                    <p>Создайте новый аккаунт</p>
+                </div>
+
+                <form class="auth-form" id="emailRegisterForm">
+                    <div class="form-group">
+                        <label for="regUsername">Имя пользователя</label>
+                        <input type="text" id="regUsername" class="form-input" placeholder="Придумайте имя" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail">Email адрес</label>
+                        <input type="email" id="regEmail" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Пароль</label>
+                        <div class="password-input">
+                            <input type="password" id="regPassword" class="form-input" placeholder="Не менее 8 символов" required minlength="8">
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPasswordConfirm">Подтвердите пароль</label>
+                        <input type="password" id="regPasswordConfirm" class="form-input" placeholder="Повторите пароль" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox">
+                            <input type="checkbox" id="acceptTerms" required>
+                            <span class="checkmark"></span>
+                            Я принимаю <a href="#" onclick="showTerms()">условия использования</a> и <a href="#" onclick="showPrivacy()">политику конфиденциальности</a>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large btn-block">
+                        <span class="btn-text">Создать аккаунт</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Forgot Password Step -->
+            <div class="auth-step" id="stepForgotPassword">
+                <div class="step-header">
+                    <button class="back-btn" onclick="showStep('stepEmail')">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2>Восстановление пароля</h2>
+                    <p>Введите ваш Email для сброса пароля</p>
+                </div>
+
+                <form class="auth-form" id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label for="resetEmail">Email адрес</label>
+                        <input type="email" id="resetEmail" class="form-input" placeholder="your@email.com" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large btn-block">
+                        <span class="btn-text">Отправить ссылку для сброса</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Вспомнили пароль? <a href="#" onclick="showStep('stepEmail')">Войти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification System -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+        </div>
+    </div>
+
+    <!-- Quick Demo Modal -->
+    <div id="demoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Демо режим</h3>
+                <span class="close" onclick="closeModal('demoModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Для тестирования используйте:</p>
+                <div class="demo-credentials">
+                    <div class="credential-item">
+                        <strong>Телефон:</strong> любой номер, код: <strong>123456</strong>
+                    </div>
+                    <div class="credential-item">
+                        <strong>Email:</strong> demo@connecthub.com
+                    </div>
+                    <div class="credential-item">
+                        <strong>Пароль:</strong> password
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeModal('demoModal')">Понятно</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="api/api.js"></script>
+
+    <script>
+        // Быстрая инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Скрываем прелоадер
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                if (preloader) {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }
+            }, 1000);
+
+            // Показываем демо подсказку при первом посещении
+            if (!localStorage.getItem('demo_shown')) {
+                setTimeout(() => {
+                    showNotification('Для тестирования используйте демо данные', 'info');
+                    localStorage.setItem('demo_shown', 'true');
+                }, 2000);
+            }
+
+            // Добавляем кнопку демо
+            const authFooter = document.querySelector('.auth-footer');
+            if (authFooter) {
+                const demoBtn = document.createElement('button');
+                demoBtn.className = 'btn btn-link';
+                demoBtn.innerHTML = '<i class="fas fa-rocket"></i> Демо данные';
+                demoBtn.onclick = () => openModal('demoModal');
+                authFooter.appendChild(demoBtn);
+            }
+        });
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function showTerms() {
+            showNotification('Условия использования будут доступны позже', 'info');
+        }
+
+        function showPrivacy() {
+            showNotification('Политика конфиденциальности будет доступна позже', 'info');
+        }
+    </script>
+</body>
+</html>
